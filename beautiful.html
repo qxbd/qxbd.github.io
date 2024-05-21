@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<title>短视频</title>
+		<link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script src="static/jquery-3.6.0.min.js"></script>
+		<script src="static/bootstrap/js/bootstrap.min.js"></script>
+		<style>
+			#videoPlayer {
+				max-width: 100%;
+				height: auto;
+			}
+
+			.a {
+				display: none;
+				/* 默认隐藏导航栏 */
+			}
+
+			@media (max-width: 400px) {
+				.a {
+					display: block;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<nav class="navbar navbar-default navbar-static-top" role="navigation">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse"
+								data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">更多</span><span
+									class="icon-bar"></span><span class="icon-bar"></span><span
+									class="icon-bar"></span></button> <a class="navbar-brand" href="#">视界</a>
+						</div>
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav">
+								<li>
+									<a href="index.html">首页</a>
+								</li>
+								<li>
+									<a href="web_drama.html">短剧查询</a>
+								</li>
+								<li class="active">
+									<a href="#">短视频</a>
+								</li>
+								<li>
+									<a href="ai_img.html">AI绘图</a>
+								</li>
+								<li>
+									<a href="trans.html">翻译</a>
+								</li>
+								<li>
+									<a href="weather.html">天气</a>
+								</li>
+							</ul>
+						</div>
+					</nav>
+
+					<nav class="navbar navbar-default navbar-fixed-bottom a" role="navigation">
+						<div class="navbar-header">
+							<div class="container text-center">
+								<a class="navbar-brand" href="index.html">首页</a>
+								<a class="navbar-brand" href="web_drama.html">短剧查询</a>
+								<a class="navbar-brand" href="#">短视频</a>
+								<a class="navbar-brand" href="ai_img.html">绘图</a>
+							</div>
+						</div>
+					</nav>
+				</div>
+			</div>
+			<button onclick="playVideo()" class="btn btn-primary mt-2">播放视频</button>
+			<a href="beautiful2.html">换源2</a>
+			<video id="videoPlayer" controls style=" display: none;">
+				Your browser does not support the video tag.
+			</video>
+
+			<script>
+				function playVideo() {
+					fetch('https://www.wudada.online/Api/NewSp')
+						.then(response => response.blob())
+						.then(blob => {
+							const videoUrl = URL.createObjectURL(blob);
+							const videoPlayer = document.getElementById('videoPlayer');
+							videoPlayer.src = videoUrl;
+							videoPlayer.style.display = 'block';
+							videoPlayer.play();
+						})
+						.catch(error => {
+							console.error('Error fetching video:', error);
+							alert('无法获取视频，请稍后再试。');
+						});
+				}
+			</script>
+	</body>

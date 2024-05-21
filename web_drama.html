@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<title>短视频</title>
+		<link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script src="static/jquery-3.6.0.min.js"></script>
+		<script src="static/bootstrap/js/bootstrap.min.js"></script>
+		<style>
+			.a {
+				display: none;
+				/* 默认隐藏导航栏 */
+			}
+
+			@media (max-width: 400px) {
+				.a {
+					display: block;
+				}
+			}
+
+			.centered-content {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 40%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<nav class="navbar navbar-default navbar-static-top" role="navigation">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse"
+								data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">更多</span><span
+									class="icon-bar"></span><span class="icon-bar"></span><span
+									class="icon-bar"></span></button> <a class="navbar-brand" href="#">视界</a>
+						</div>
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav">
+								<li>
+									<a href="index.html">首页</a>
+								</li>
+								<li class="active">
+									<a href="#">短剧查询</a>
+								</li>
+								<li>
+									<a href="beautiful.html">短视频</a>
+								</li>
+								<li>
+									<a href="ai_img.html">AI绘图</a>
+								</li>
+								<li>
+									<a href="trans.html">翻译</a>
+								</li>
+								<li>
+									<a href="weather.html">天气</a>
+								</li>
+							</ul>
+						</div>
+					</nav>
+
+					<nav class="navbar navbar-default navbar-fixed-bottom a" role="navigation">
+						<div class="navbar-header">
+							<div class="container text-center">
+								<a class="navbar-brand" href="index.html">首页</a>
+								<a class="navbar-brand" href="#">短剧查询</a>
+								<a class="navbar-brand" href="beautiful.html">短视频</a>
+								<a class="navbar-brand" href="ai_img.html">绘图</a>
+							</div>
+						</div>
+					</nav>
+				</div>
+			</div>
+			<div class="container centered-content">
+				<div class="my-4">
+					<label for="keyword">请输入短剧名字：</label>
+					<input type="text" id="keyword" class="form-control">
+					<br>
+					<button onclick="search()" class="btn btn-primary mt-2">搜索</button>
+				</div>
+			</div>
+			<div class="container centered-content">
+				<div id="result"></div>
+			</div>
+
+
+
+			<script>
+				function search() {
+					const keyword = document.getElementById('keyword').value;
+
+					fetch(`https://zy.6789o.com/duanjuapi/search.php?text=${keyword}`)
+						.then(response => response.json())
+						.then(data => {
+							const result = document.getElementById('result');
+							result.innerHTML = ''; // Clear previous results
+
+							data.data.forEach(item => {
+								const name = item.name;
+								const viewlink = item.viewlink;
+								const addtime = item.addtime;
+
+								const itemElement = document.createElement('div');
+								itemElement.innerHTML = `
+			                            <div class="card my-3">
+			                                <div class="card-body">
+			                                    <h5 class="card-title">${name}</h5>
+			                                    <p class="card-text"><strong>View Link:</strong> <a href="${viewlink}" target="_blank">${viewlink}</a></p>
+			                                    <p class="card-text"><strong>Add Time:</strong> ${addtime}</p>
+			                                </div>
+			                            </div>
+			                        `;
+								result.appendChild(itemElement);
+							});
+						})
+						.catch(error => console.error('Error:', error));
+				}
+			</script>
+	</body>

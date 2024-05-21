@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<title>短视频</title>
+		<link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script src="static/jquery-3.6.0.min.js"></script>
+		<script src="static/bootstrap/js/bootstrap.min.js"></script>
+		<style>
+			.a {
+				display: none;
+				/* 默认隐藏导航栏 */
+			}
+
+			@media (max-width: 400px) {
+				.a {
+					display: block;
+				}
+			}
+
+			body {
+				font-family: Arial, sans-serif;
+	/* 			margin: 0;
+				padding: 0; */
+				background-color: #f4f4f4;
+			}
+
+			.container {
+				border-radius: 8px;
+			}
+
+			input[type="text"] {
+				width: 100%;
+				padding: 10px;
+				margin-bottom: 10px;
+				border-radius: 5px;
+				border: 1px solid #ccc;
+				box-sizing: border-box;
+			}
+
+			button {
+				padding: 10px 20px;
+				background-color: #007bff;
+				color: #fff;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+			}
+
+			button:hover {
+				background-color: #0056b3;
+			}
+
+			.weather-output {
+				margin-top: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<nav class="navbar navbar-default navbar-static-top" role="navigation">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse"
+								data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">更多</span><span
+									class="icon-bar"></span><span class="icon-bar"></span><span
+									class="icon-bar"></span></button> <a class="navbar-brand" href="#">视界</a>
+						</div>
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav">
+								<li>
+									<a href="index.html">首页</a>
+								</li>
+								<li>
+									<a href="web_drama.html">短剧查询</a>
+								</li>
+								<li>
+									<a href="#">短视频</a>
+								</li>
+								<li>
+									<a href="ai_img.html">AI绘图</a>
+								</li>
+								<li>
+									<a href="trans.html">翻译</a>
+								</li>
+								<li class="active">
+									<a href="weather.html">天气</a>
+								</li>
+							</ul>
+						</div>
+					</nav>
+
+					<nav class="navbar navbar-default navbar-fixed-bottom a" role="navigation">
+						<div class="navbar-header">
+							<div class="container text-center">
+								<a class="navbar-brand" href="index.html">首页</a>
+								<a class="navbar-brand" href="web_drama.html">短剧查询</a>
+								<a class="navbar-brand" href="#">短视频</a>
+								<a class="navbar-brand" href="ai_img.html">绘图</a>
+							</div>
+						</div>
+					</nav>
+				</div>
+			</div>
+			<div class="container">
+				<h2>天气查询</h2>
+				<input type="text" id="cityInput" placeholder="请输入城市名称">
+				<button onclick="fetchWeather()">查询</button>
+				<div class="weather-output" id="weatherOutput"></div>
+			</div>
+
+			<script>
+				function fetchWeather() {
+					var city = document.getElementById('cityInput').value;
+
+					// 这里是假设的 API 地址，请替换为你实际的天气 API 地址
+					var apiUrl =
+						'https://restapi.amap.com/v3/weather/weatherInfo?key=7dc8db8bb06b84187d46aa5e1cc6b45d&extensions=all&city=' +
+						encodeURIComponent(city);
+
+					fetch(apiUrl)
+						.then(response => response.json())
+						.then(data => {
+							// 处理返回的 JSON 数据
+							if (data.status === "1") {
+								var forecasts = data.forecasts[0].casts;
+								var output = "<h3>" + data.forecasts[0].city + "天气预报</h3><ul>";
+
+								forecasts.forEach(forecast => {
+									output += "<li><strong>" + forecast.date + "：</strong>白天：" + forecast.dayweather +
+										"，夜间：" + forecast.nightweather + "，最高气温：" + forecast.daytemp + "°C，最低气温：" +
+										forecast.nighttemp + "°C</li>";
+								});
+
+								output += "</ul>";
+								document.getElementById('weatherOutput').innerHTML = output;
+							} else {
+								document.getElementById('weatherOutput').innerHTML = "<p>未找到相关城市的天气信息。</p>";
+							}
+						})
+						.catch(error => {
+							console.error('Error fetching weather data:', error);
+							document.getElementById('weatherOutput').innerHTML = "<p>抱歉，无法获取天气信息。</p>";
+						});
+				}
+			</script>
+	</body>
