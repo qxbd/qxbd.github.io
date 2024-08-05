@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片加密和解密</title>
+    <link rel="stylesheet" href="my_jiami/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>图片加密和解密</h1>
+        
+        <div id="encryptionSection">
+            <h2>图片加密</h2>
+            <input type="file" id="batchEncryptInput" multiple webkitdirectory style="display: none;" />
+            <input type="file" id="singleEncryptInput" style="display: none;" />
+            <input type="text" id="encryptionKey" placeholder="请输入加密密钥" />
+            <button id="batchEncryptButton">批量加密图片</button>
+            <button id="singleEncryptButton">加密单个图片</button>
+        </div>
+        
+        <div id="decryptionSection">
+            <h2>图片解密</h2>
+            <input type="file" id="decryptInput" multiple style="display: none;" />
+            <input type="text" id="decryptionKey" placeholder="请输入解密密钥" />
+            <button id="decryptButton">解密图片</button>
+        </div>
+        
+        <div id="progressContainer">
+            <div id="progressBar"></div>
+        </div>
+        
+        <div id="imageContainer"></div>
+        
+        <a id="downloadLink" style="display: none;">下载</a>
+    </div>
+    <script src="my_jiami/script.js"></script>
+</body>
+</html>
